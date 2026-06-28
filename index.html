@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>YKS Corporation: Манифест Будущего Музыки</title>
+    <style>
+        :root {
+            --neon-red: #ff004c; /* Красный для акцентов и предупреждений */
+            --neon-green: #00ff8c; /* Зеленый для роста, достижений, целей */
+            --neon-blue: #00bfff; /* Синий для философии, общих заголовков, основного бренда */
+            --text-white: #ffffff; /* Белый для основного текста */
+            --bg-dark: #0a0a0a;
+            --bg-light-dark: #1a1a1a;
+            --border-light: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.04);
+            --glass-blur: blur(8px);
+        }
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-white);
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            -webkit-print-color-adjust: exact; /* Для печати фоновых цветов */
+            color-adjust: exact;
+        }
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm 18mm 20mm 18mm;
+            margin: 0 auto;
+            box-sizing: border-box;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-light);
+            box-shadow: 0 0 15px rgba(0, 191, 255, 0.1);
+            page-break-after: always;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        @media print {
+            body { background: none; }
+            .page {
+                border: none;
+                margin: 0;
+                padding: 15mm;
+                box-shadow: none;
+                page-break-after: always;
+                width: auto;
+                min-height: auto;
+            }
+        }
+        h1, h2, h3, h4 { margin: 0 0 10px 0; font-weight: 700; text-align: left; }
+        h1 { font-size: 44px; text-transform: uppercase; letter-spacing: 4px; color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue), 0 0 20px rgba(0,191,255,0.4); margin-bottom: 20px; }
+        h2 { font-size: 28px; color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green), 0 0 15px rgba(0,255,140,0.3); margin-bottom: 15px; }
+        h3 { font-size: 22px; color: var(--neon-red); text-shadow: 0 0 6px var(--neon-red), 0 0 12px rgba(255,0,76,0.3); margin-bottom: 10px; }
+        h4 { font-size: 18px; color: var(--neon-blue); text-shadow: 0 0 5px var(--neon-blue); margin-bottom: 8px; }
+        p { margin: 0 0 12px 0; text-align: justify; color: var(--text-white); }
+        .quote { font-style: italic; font-size: 18px; color: var(--neon-red); text-align: center; margin: 30px 0; padding: 15px; border-left: 3px solid var(--neon-red); border-right: 3px solid var(--neon-red); text-shadow: none; }
+        .quote::before { content: "«"; font-size: 30px; line-height: 0; vertical-align: bottom; margin-right: 5px; }
+        .quote::after { content: "»"; font-size: 30px; line-height: 0; vertical-align: bottom; margin-left: 5px; }
+        .quote-author { font-size: 14px; text-align: right; margin-top: 10px; color: var(--neon-blue); }
+
+        .glass-box { background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid var(--border-light); padding: 25px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 0 15px rgba(0, 191, 255, 0.1); }
+        .glass-box h4 { margin-top: 0; color: var(--neon-green); text-shadow: none; }
+        .glass-box p { color: #e0e0e0; }
+        .highlight-red { color: var(--neon-red); text-shadow: 0 0 5px var(--neon-red); font-weight: bold; }
+        .highlight-green { color: var(--neon-green); text-shadow: 0 0 5px var(--neon-green); font-weight: bold; }
+        .highlight-blue { color: var(--neon-blue); text-shadow: 0 0 5px var(--neon-blue); font-weight: bold; }
+
+        .footer-text { position: absolute; bottom: 15mm; left: 18mm; right: 18mm; font-size: 11px; color: #555; text-align: center; }
+        .page-number { position: absolute; bottom: 15mm; right: 18mm; font-size: 11px; color: #555; }
+
+        /* Графики */
+        .chart-container { width: 100%; height: 200px; margin-bottom: 25px; display: flex; align-items: flex-end; justify-content: space-around; padding: 10px 0; border-bottom: 1px solid var(--border-light); }
+        .bar { width: 15%; background: var(--glass-bg); border: 1px solid var(--border-light); border-radius: 5px 5px 0 0; position: relative; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--text-white); text-shadow: 0 0 5px var(--text-white); transition: height 0.5s ease-out; }
+        .bar-label { position: absolute; top: -20px; font-size: 11px; color: #ccc; }
+        .bar-value { position: absolute; bottom: -20px; font-size: 11px; color: #ccc; }
+        .bar.red-bar { background: linear-gradient(to top, rgba(255,0,76,0.5), rgba(255,0,76,0.1)); border-color: var(--neon-red); }
+        .bar.green-bar { background: linear-gradient(to top, rgba(0,255,140,0.5), rgba(0,255,140,0.1)); border-color: var(--neon-green); }
+        .bar.blue-bar { background: linear-gradient(to top, rgba(0,191,255,0.5), rgba(0,191,255,0.1)); border-color: var(--neon-blue); }
+
+        .progress-bar-container { width: 100%; height: 25px; background: var(--glass-bg); border-radius: 5px; overflow: hidden; margin-top: 15px; position: relative; }
+        .progress-bar-fill { height: 100%; border-radius: 5px; text-align: right; line-height: 25px; padding-right: 10px; box-sizing: border-box; font-weight: bold; transition: width 0.8s ease-out; }
+        .progress-bar-fill span { margin-left: auto; }
+        
+        .grid-schedule { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 20px; }
+        .schedule-item { background: var(--glass-bg); border: 1px solid rgba(255,255,255,0.08); padding: 15px; border-radius: 8px; text-align: center; }
+        .schedule-item h4 { margin-top: 0; color: var(--neon-red); font-size: 18px; text-shadow: none; }
+        .schedule-item p { font-size: 12px; color: #ccc; margin-bottom: 5px; }
+        .schedule-item .percentage { font-size: 24px; font-weight: bold; margin-top: 10px; }
+        .schedule-item .bar-small { height: 8px; width: 80%; background: #333; margin: 0 auto; border-radius: 4px; overflow: hidden; }
+        .schedule-item .bar-small-fill { height: 100%; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <!-- Страница 1: Титульный лист YKS Corporation -->
+    <div class="page" style="justify-content: center; text-align: center;">
+        <h1 style="font-size: 60px; line-height: 1.2;">YKS CORPORATION</h1>
+        <h2 style="font-size: 36px; margin-top: 20px;">МАНИФЕСТ БУДУЩЕГО МУЗЫКИ</h2>
+        <p style="font-size: 20px; margin-top: 30px; color: var(--neon-blue);">Эра нового звука начинается здесь.</p>
+        <div class="footer-text">Документ V1.0 | 27 Июня 2026</div>
+    </div>
+
+    <!-- Страница 2: Обращение ЯрКуСиКа -->
+    <div class="page">
+        <h1 class="red">От основателя:</h1>
+        <h2>Голос, который не остановить.</h2>
+        <div class="glass-box">
+            <p>Добро пожаловать в мир <span class="highlight-blue">YKS Corporation</span>. Это не просто группа, это движение. Многие пытались меня остановить, заглушить. Но я стоял на своём. И эта презентация — прямое тому доказательство. Мы не ищем компромиссов, мы ищем партнеров, которые готовы идти до конца. В каждом бите, в каждом слове, в каждом взгляде — наша истина.</p>
+            <p>Мой путь был тернист, но именно он выковал меня. Он сделал из меня того, кто видит не просто музыку, а <span class="highlight-green">возможность изменить мир</span>, вдохновить миллионы. Этот манифест — не обещание, а заявление о намерениях. Для тех, кто готов слушать и идти вместе с нами.</p>
+        </div>
+        <p class="quote">«Уверен ли я в том, что я делаю? Уверен ли в том, что я на правильном пути? Лично я уверен.»</p>
+        <p class="quote-author">— ЯрКуСиК</p>
+        <div class="footer-text">© YKS CORPORATION. ВСЕ ПРАВА ЗАЩИЩЕНЫ.</div>
+        <div class="page-number">2</div>
+    </div>
+
+    <!-- Страница 3: Личная история ЯрКуСиКа (био) -->
+    <div class="page">
+        <h1 class="blue">Генезис Лидера</h1>
+        <h2>История ЯрКуСиКа</h2>
+        <div class="glass-box">
+            <p>Мой путь начался не с больших сцен, а с улиц, где каждый звук был борьбой, а каждое слово — попыткой донести правду. Мой псевдоним <span class="highlight-red">ЯрКуСиК</span> — это не просто набор букв, это отражение огня внутри, кипящей энергии и жажды к жизни, которая прошла через множество испытаний. От первых неловких шагов в творчестве, когда казалось, что голос не будет услышан, до момента, когда я понял, что моё место — быть впереди, вести за собой.</p>
+            <p>Детство, полное вызовов, юность, пропитанная поиском себя в хаосе большого города — всё это формировало мой уникальный взгляд на мир. Я видел, как легко люди сдаются, как быстро гаснут амбиции. Это заставило меня быть сильнее. Я научился не просто выживать, а <span class="highlight-green">создавать</span>, не просто слушать, а <span class="highlight-blue">слышать истину</span> в шуме.</p>
+            <p>Музыка стала моим языком, моим щитом и моим оружием. Она дала мне возможность говорить о том, что важно, без фильтров и цензуры. Каждый шрам, каждый провал, каждая победа — это нота в моей симфонии. <span class="highlight-red">Я не боюсь быть неидеальным</span>, потому что именно в этой неидеальности заключена моя сила и подлинность. ЯрКуСиК — это голос поколения, которое отказалось молчать.</p>
+        </div>
+        <p class="quote">«Жизнь проехалась по мне очень сильно, и я не могу никак с этим справиться. Я внутри совсем другой.»</p>
+        <p class="quote-author">— ЯрКуСиК</p>
+        <div class="footer-text">© YKS CORPORATION. ВСЕ ПРАВА ЗАЩИЩЕНЫ.</div>
+        <div class="page-number">3</div>
+    </div>
+
+    <!-- Страница 4: Философия YKS -->
+    <div class="page">
+        <h1 class="green">Философия YKS</h1>
+        <h2>Больше, чем музыка. Это манифест.</h2>
+        <div class="glass-box">
+            <p>YKS — это не просто группа, это <span class="highlight-blue">философия</span>. Мы — три голоса, объединенные одной идеей: создавать музыку, которая не просто развлекает, а проникает в душу, заставляет задуматься и меняет сознание. Мы отвергаем пустые слова и банальные рифмы. Каждый наш трек — это история, это откровение, это вызов.</p>
+            <p>Наш звук — это <span class="highlight-red">сердцебиение города</span>, смешанное с пульсом человеческой души. Мы берем боль, сомнения, амбиции и превращаем их в мощные музыкальные послания. Мы верим, что настоящая музыка должна быть катарсисом, она должна очищать и давать силы двигаться дальше. Мы не следуем трендам, мы их создаем, прокладывая свои пути там, где другие видят тупик.</p>
+            <p><strong>Ценности YKS:</strong></p>
+            <ul>
+                <li><span class="highlight-green">Искренность:</span> Никаких масок, только правда.</li>
+                <li><span class="highlight-red">Непокорность:</span> Мы ломаем стереотипы и играем по своим правилам.</li>
+                <li><span class="highlight-blue">Единство:</span> Три голоса, одно сердце, одна цель.</li>
+                <li><span class="highlight-green">Инновации:</span> Мы постоянно ищем новые формы и звучание.</li>
+            </ul>
+        </div>
+        <p class="quote">«Иногда в ночной тишине, когда тени длинны, так отчаянно хочется просто земной тишины...»</p>
+        <p class="quote-author">— ЯрКуСиК</p>
+        <div class="footer-text">© YKS CORPORATION. ВСЕ ПРАВА ЗАЩИЩЕНЫ.</div>
+        <div class="page-number">4</div>
+    </div>
+
+    <!-- Страница 5: Звучание YKS -->
+    <div class="page">
+        <h1 class="blue">Звуковая Идентичность</h1>
+        <h2>Голос YKS: альтернатива, глубина, энергия.</h2>
+        <div class="glass-box">
+            <p>Звучание <span class="highlight-blue">YKS</span> — это тщательно выверенный симбиоз, который не имеет прямых аналогов. Мы не ограничиваем себя рамками одного жанра, но наша основа всегда остается <span class="highlight-green">альтернативным роком</span> и <span class="highlight-red">пост-гранжем</span>, обогащенным современными элементами.</p>
+            <h4>Ключевые элементы нашего саунда:</h4>
+            <ul>
+                <li><span class="highlight-green">Мощный вокал:</span> Три уникальных голоса, каждый из которых несет свою часть истории, сливаясь в гармонии или вступая в эмоциональный диалог. От чистого, пронзительного пения до агрессивного речитатива.</li>
+                <li><span class="highlight-blue">Электронная подложка:</span> Мы используем глубокие синтезаторные пэды, атмосферные шумы и современные биты, которые добавляют трекам кинематографичности и футуристического вайба.</li>
+                <li><span class="highlight-red">Гитара:</span> Электрогитара — наш основной инструмент для создания настроения. От медитативных переборов, напоминающих "камин в шесть утра", до мощных, дисторшированных риффов, которые раскачивают залы.</li>
+                <li><span class="highlight-green">Ритм-секция:</span> Плотные барабаны, мощный 808-й бас, создающие грув, который заставляет двигаться.</li>
+            </ul>
+            <p>Мы строим треки так, чтобы каждый мог найти в них отражение своих собственных эмоций — от глубокой меланхолии до безудержного драйва. Наша музыка — это <span class="highlight-blue">аудио-путешествие</span>, которое оставляет след.</p>
+        </div>
+        <p class="quote">«Мы не просто поем — мы рассказываем жизни.»</p>
+        <p class="quote-author">— YKS Corporation</p>
+        <div class="footer-text">© YKS CORPORATION. ВСЕ ПРАВА ЗАЩИЩЕНЫ.</div>
+        <div class="page-number">5</div>
+    </div>
+
+    <!-- Страница 6: Дорожная карта YKS - Детализация Этапа 1 -->
+    <div class="page">
+        <h1 class="red">Roadmap: Фаза I</h1>
+        <h2><span class="highlight-blue">Этап 1: Фундамент (0-6 месяцев)</span> - Построение ядра</h2>
+        <div class="glass-box">
+            <h4><span class="highlight-green">Цель:</span> Заложить прочный фундамент для будущего доминирования.</h4>
+            <p>Этот этап посвящен кристаллизации нашей идентичности и созданию первой мощной волны контента. Мы не торопимся, но действуем максимально эффективно, используя каждую минуту.</p>
+            <ol>
+                <li><span class="highlight-blue">Формирование состава:</span> Окончательное утверждение ролей и обязанностей каждого из трех участников. Подписание всех юридических документов (NDA, Договоры, Родительские соглашения).</li>
+                <li><span class="highlight-green">Создание YKS OS:</span> Полное развертывание и отладка внутреннего мобильного приложения для управления всеми процессами группы: задачи, финансы, контент-план, коммуникации.</li>
+                <li><span class="highlight-red">Запись дебютного EP:</span> 5-6 концептуальных треков, которые максимально полно отражают нашу философию и звучание. Запись будет проходить в собственной или арендованной профессиональной студии, под контролем ЯрКуСиКа, с привлечением лучших звукоинженеров для сведения и мастеринга.</li>
+                <li><span class="highlight-blue">Визуализация бренда:</span> Разработка уникального стиля, фотосессии, создание Mood-board для будущих клипов и обложек. Каждый визуальный элемент будет отражать неоновую эстетику и глубину нашей музыки.</li>
+                <li><span class="highlight-green">Тестирование гипотез:</span> Пилотные загрузки коротких отрывков (snip-тесты) в закрытые группы и на тестовые аккаунты для оценки реакции аудитории и внесения корректировок.</li>
+            </ol>
+            <p>Ожидаемые результаты: Готовый, идеально сведенный и отмастеренный EP, полностью функционирующая внутренняя система управления, четкий план дальнейших действий и сформированный визуал.</p>
+        </div>
+        <div class="footer-text">© YKS CORPORATION. ВСЕ ПРАВА ЗАЩИЩЕНЫ.</div>
+        <div class="page-number">6</div>
+    </div>
+
+    <!-- Страница 7: Дорожная карта YKS - Детализация Этапа 2 -->
+    <div class="page">
+        <h1 class="green">Roadmap: Фаза II</h1>
+        <h2><span class="highlight-blue">Этап 2: Прорыв (6-12 месяцев)</span> - Масштабирование и узнаваемость</h2>
+        <div class="glass-box">
+            <h4><span class="highlight-green">Цель:</span> Выйти за рамки инди-проекта и заявить о себе на федеральном уровне.</h4>
+            <p>На этом этапе мы переходим от создания контента к его мощному распространению и взаимодействию с широкой аудиторией. Мы используем все доступные каналы для максимального охвата.</p>
+            <ol>
+                <li><span class="highlight-red">Масштабный релиз альбома:</span> Официальная дистрибуция EP на всех стриминговых платформах. Активное PR-продвижение релиза через медиа, музыкальные блоги и сообщества.</li>
+                <li><span class="highlight-blue">Вирусный контент:</span> Создание 3-5 высококачественных музыкальных видеоклипов, которые не просто дополняют треки, но и сами по себе становятся вирусными хитами. Особое внимание — визуальному сторителлингу и неоновой эстетике.</li>
+                <li><span class="highlight-green">Работа с лидерами мнений:</span> Коллаборации и интеграции с популярными блогерами, инфлюенсерами, музыкальными критиками, которые разделяют нашу философию. Не "купить пиар", а найти единомышленников.</li>
+                <li><span class="highlight-red">Первые живые выступления:</span> Организация серии тестовых концертов в клубном формате в крупных городах для отработки сценического мастерства, взаимодействия с аудиторией и сбора обратной связи.</li>
+                <li><span class="highlight-blue">Активная работа в соцсетях:</span> Создание уникального контента для TikTok, Instagram, VK, YouTube. Использование коротких, цепляющих фрагментов песен, бэкстейджей, челленджей.</li>
+            </ol>
+            <p>Ожидаемые результаты: Миллионы стримов, сотни тысяч подписчиков, рост узнаваемости бренда YKS, положительные отзывы в СМИ, формирование лояльной фанатской базы.</p>
+        </div>
+        <div class="footer-text">© YKS CORPORATION. ВСЕ ПРАВА ЗАЩИЩЕНЫ.</div>
+        <div class="page-number">7</div>
+    </div>
+
+    <!-- Страница 8: Дорожная карта YKS - Детализация Этапа 3 -->
+    <div class="page">
+        <h1 class="blue">Roadmap: Фаза III</h1>
+        <h2><span class="highlight-blue">Этап 3: Захват (12-24 месяцев)</span> - Доминирование и независимость</h2>
+        <div class="glass-box">
+            <h4><span class="highlight-green">Цель:</span> Занять лидирующие позиции в музыкальной индустрии и стать полностью независимыми.</h4>
+            <p>Этот этап — кульминация нашей стратегии, когда YKS становится не просто группой, а самодостаточной музыкальной корпорацией, диктующей свои правила игры.</p>
+            <ol>
+                <li><span class="highlight-red">Первый федеральный тур:</span> Организация масштабного концертного тура по городам России и стран СНГ, включая выступления на крупных фестивалях в качестве хедлайнеров.</li>
+                <li><span class="highlight-blue">Собственная студийная база:</span> Инвестиции в создание или полное оснащение собственной профессиональной студии звукозаписи и видеопродакшна. Полный контроль над творческим процессом и качеством контента.</li>
+                <li><span class="highlight-green">Развитие YKS Media:</span> Запуск собственного медиа-ресурса (блог, подкасты, видеоблог) для углубленного взаимодействия с аудиторией, публикации эксклюзивного контента и формирования собственного информационного поля.</li>
+                <li><span class="highlight-red">Разработка мерча:</span> Создание и запуск эксклюзивной линии одежды, аксессуаров и других товаров под брендом YKS, отражающих нашу эстетику и философию.</li>
+                <li><span class="highlight-blue">Международная экспансия:</span> Перевод ключевых треков на английский язык, создание контента для глобальной аудитории, первые шаги по выходу на мировые стриминговые платформы и музыкальные рынки.</li>
+            </ol>
+            <p>Ожидаемые результаты: Статус одной из самых влиятельных групп на постсоветском пространстве, финансовая независимость, собственная инфраструктура, мощное глобальное присутствие бренда YKS.</p>
+        </div>
+        <div class="footer-text">© YKS CORPORATION. ВСЕ ПРАВА ЗАЩИЩЕНЫ.</div>
+        <div class="page-number">8</div>
+    </div>
+
+    <!-- Страница 9: Статистика и Прогнозы Роста -->
+    <div class="page">
+        <h1 class="green">Динамика Роста</h1>
+        <h2>Прогнозируемые показатели YKS.</h2>
+        <div class="glass-box">
+            <p>Наш подход к музыке — это не только творчество, но и четкая аналитика. Мы строим стратегии, основанные на данных и прогнозах, чтобы гарантировать <span class="highlight-green">экспоненциальный рост</span>.</p>
+
+            <h4>Прогноз стримов (млн)</h4>
+            <div class="chart-container">
+                <div class="bar blue-bar" style="height: 30%;"><span class="bar-label">Мес. 6</span><span class="bar-value">5-10 млн</span></div>
+                <div class="bar green-bar" style="height: 60%;"><span class="bar-label">Мес. 12</span><span class="bar-value">25-40 млн</span></div>
+                <div class="bar red-bar" style="height: 90%;"><span class="bar-label">Мес. 24+</span><span class="bar-value">100+ млн</span></div>
+            </div>
+
+            <h4>Рост аудитории в соцсетях (тыс. подписчиков)</h4>
+            <div class="chart-container">
+                <div class="bar green-bar" style="height: 40%;"><span class="bar-label">Мес. 6</span><span class="bar-value">20-50K</span></div>
+                <div class="bar blue-bar" style="height: 70%;"><span class="bar-label">Мес. 12</span><span class="bar-value">100-250K</span></div>
+                <div class="bar red-bar" style="height: 100%;"><span class="bar-label">Мес. 24+</span><span class="bar-value">500K+</span></div>
+            </div>
+
+            <p>Эти графики демонстрируют не просто рост, а <span class="highlight-red">неудержимое движение вперёд</span>, основанное на качестве контента и стратегическом маркетинге. Мы не играем на мелочах, мы играем на большие ставки.</p>
+        </div>
+        <div class="footer-text">© YKS CORPORATION. ВСЕ ПРАВА ЗАЩИЩЕНЫ.</div>
+        <div class="page-number">9</div>
+    </div>
+
+    <!-- Страница 10: Режим работы и продуктивность -->
+    <div class="page">
+        <h1 class="red">Режим "Эффективность"</h1>
+        <h2>Дисциплина — залог прорыва.</h2>
+        <div class="glass-box">
+            <p>Продуктивность — краеугольный камень <span class="highlight-blue">YKS Corporation</span>. Наш график работы разработан для максимальной отдачи, сочетая интенсивность и периоды восстановления.</p>
+            <h3>Основной производственный цикл (90% продуктивности)</h3>
+            <div class="schedule-item">
+                <h4 class="red">ВОСКРЕСЕНЬЕ</h4>
+                <p>День максимальной концентрации:</p>
+                <ul>
+                    <li>Студийная запись вокала / инструментов.</li>
+                    <li>Полный продакшн и сведение новых треков.</li>
+                    <li>Генерация идей для визуального контента.</li>
+                </ul>
+                <div class="percentage green">90%</div>
+                <div class="bar-small"><div class="bar-small-fill" style="width: 90%; background: var(--neon-green);"></div></div>
+            </div>
+
+            <h3>Поддерживающий режим (10% продуктивности)</h3>
+            <div class="grid-schedule">
+                <div class="schedule-item">
+                    <h4 class="blue">ВТОРНИК</h4>
+                    <p>Менеджмент, PR, стратегическое планирование.</p>
+                    <div class="percentage blue">3.3%</div>
+                    <div class="bar-small"><div class="bar-small-fill" style="width: 33%; background: var(--neon-blue);"></div></div>
+                </div>
+                <div class="schedule-item">
+                    <h4 class="blue">ЧЕТВЕРГ</h4>
+                    <p>Работа с блогом, социальные сети, ответы фанатам.</p>
+                    <div class="percentage blue">3.3%</div>
+                    <div class="bar-small"><div class="bar-small-fill" style="width: 33%; background: var(--neon-blue);"></div></div>
+                </div>
+                <div class="schedule-item">
+                    <h4 class="blue">СУББОТА</h4>
+                    <p>Легкие демо, новые наброски, экспериментальные записи.</p>
+                    <div class="percentage blue">3.3%</div>
+                    <div class="bar-small"><div class="bar-small-fill" style="width: 33%; background: var(--neon-blue);"></div></div>
+                </div>
+            </div>
+            <p style="text-align: center; margin-top: 25px;">«Каждая минута работает на результат. Каждый день приближает нас к цели.»</p>
+        </div>
+        <div class="footer-text">© YKS CORPORATION. ВСЕ ПРАВА ЗАЩИЩЕНЫ.</div>
+        <div class="page-number">10</div>
+    </div>
+
+    <!-- Страница 11: Цитаты и Вдохновение -->
+    <div class="page">
+        <h1 class="blue">Голос YKS</h1>
+        <h2>Цитаты, которые формируют наш путь.</h2>
+        <div class="glass-box">
+            <p class="quote">«Мы не боимся быть неидеальными, потому что именно в этой неидеальности заключена наша сила и подлинность.»</p>
+            <p class="quote-author">— ЯрКуСиК</p>
+            <p class="quote">«Каждый мой шаг — осознанный. Каждый трек — выстрел в цель.»</p>
+            <p class="quote-author">— ЯрКуСиК</p>
+            <p class="quote">«Музыка — это не набор звуков. Это единственное место, где я могу быть честным.»</p>
+            <p class="quote-author">— ЯрКуСиК</p>
+            <p class="quote">«Мы живем в мире, где страх — валюта. Мы платим за свободу своим творчеством.»</p>
+            <p class="quote-author">— YKS Corporation</p>
+            <p class="quote">«Когда ты думаешь, что достиг потолка, помни: над тобой только небо. И оно ждет.»</p>
+            <p class="quote-author">— ЯрКуСиК</p>
+        </div>
+        <div class="footer-text">© YKS CORPORATION. ВСЕ ПРАВА ЗАЩИЩЕНЫ.</div>
+        <div class="page-number">11</div>
+    </div>
+
+    <!-- Страница 12: Цели и Амбиции -->
+    <div class="page">
+        <h1 class="red">Глобальные Амбиции</h1>
+        <h2>Наша цель — мировое доминирование.</h2>
+        <div class="glass-box">
+            <p>Мы не просто мечтаем о большом, мы планомерно идем к этому. <span class="highlight-red">YKS Corporation</span> видит себя на вершине мировой музыкальной индустрии, создавая прецеденты и задавая новые стандарты. Наши амбиции не знают границ.</p>
+            <h4>Долгосрочные цели:</h4>
+            <ul>
+                <li><span class="highlight-green">#1 в чартах:</span> Регулярное попадание в топ-10 мировых музыкальных чартов с каждым новым релизом.</li>
+                <li><span class="highlight-blue">Глобальные туры:</span> Проведение успешных концертных туров по Северной Америке, Европе, Азии, собирая стадионы и арены.</li>
+                <li><span class="highlight-green">Музыкальная Империя:</span> Создание собственной многофункциональной медиа-платформы, которая будет объединять музыку, видео, моду и технологии.</li>
+                <li><span class="highlight-red">Культурное влияние:</span> YKS — не просто группа, а культурный феномен, формирующий тренды и вдохновляющий новое поколение артистов и слушателей.</li>
+            </ul>
+            <p>«Мы не просто хотим быть услышанными, мы хотим, чтобы наш голос изменил мир.»</p>
+        </div>
+        <div class="footer-text">© YKS CORPORATION. ВСЕ ПРАВА ЗАЩИЩЕНЫ.</div>
+        <div class="page-number">12</div>
+    </div>
+
+    <!-- Страница 13: Технологии и Инновации -->
+    <div class="page">
+        <h1 class="blue">Технологии в ДНК</h1>
+        <h2>YKS: на острие инноваций.</h2>
+        <div class="glass-box">
+            <p>В <span class="highlight-blue">YKS Corporation</span> мы верим, что будущее музыки неразрывно связано с технологиями. Мы активно внедряем передовые решения для усиления нашего творческого потенциала и оптимизации всех процессов. Наша внутренняя <span class="highlight-green">YKS OS</span> — это лишь начало.</p>
+            <h4>Технологические векторы развития:</h4>
+            <ul>
+                <li><span class="highlight-green">ИИ в продакшне:</span> Использование искусственного интеллекта для анализа трендов, создания уникальных битов, оптимизации мастеринга и даже для генерации новых звуковых текстур.</li>
+                <li><span class="highlight-blue">Виртуальная реальность (VR) и AR:</span> Разработка уникальных VR-концертов и AR-опытов для фанатов, которые позволят погрузиться в мир YKS глубже, чем когда-либо.</li>
+                <li><span class="highlight-red">Блокчейн и NFT:</span> Изучение возможностей блокчейна для защиты авторских прав, создания уникального коллекционного мерча и новых способов взаимодействия с аудиторией через NFT.</li>
+                <li><span class="highlight-green">Собственные инструменты:</span> Разработка уникальных плагинов, звуковых библиотек и синтезаторов, которые будут формировать фирменное звучание YKS.</li>
+            </ul>
+            <p>«Технологии для нас — не самоцель, а инструмент, который расширяет границы творчества и позволяет донести нашу музыку до каждого уголка планеты.»</p>
+        </div>
+        <div class="footer-text">© YKS CORPORATION. ВСЕ ПРАВА ЗАЩИЩЕНЫ.</div>
+        <div class="page-number">13</div>
+    </div>
+
+    <!-- Страница 14: Партнерство и Инвестиции -->
+    <div class="page">
+        <h1 class="red">Партнёрство</h1>
+        <h2>Ваш вклад в наше будущее.</h2>
+        <div class="glass-box">
+            <p><span class="highlight-red">YKS Corporation</span> открыта для стратегического партнерства и инвестиций. Мы ищем не просто финансирование, а синергию — единомышленников, которые разделяют наше видение и готовы идти с нами к вершинам.</p>
+            <h4>Что мы предлагаем партнерам:</h4>
+            <ul>
+                <li><span class="highlight-green">Высокий ROI:</span> Наш рост экспоненциален, а бизнес-модель прозрачна и масштабируема. Инвестиции в YKS — это инвестиции в будущее музыкальной индустрии.</li>
+                <li><span class="highlight-blue">Инновационный бренд:</span> Ассоциация с молодым, динамичным и влиятельным брендом, который уже сегодня формирует завтрашний день.</li>
+                <li><span class="highlight-red">Эксклюзивный доступ:</span> Возможность участия в закрытых мероприятиях, доступ к невыпущенному материалу и личное взаимодействие с Основателем и командой.</li>
+                <li><span class="highlight-green">Совместное создание:</span> Возможность участвовать в формировании культурного ландшафта, спонсируя проекты, которые будут помнить десятилетиями.</li>
+            </ul>
+            <p>«Мы не просим помощи. Мы предлагаем путь к вершине, который мы пройдем вместе.»</p>
+        </div>
+        <div class="footer-text">© YKS CORPORATION. ВСЕ ПРАВА ЗАЩИЩЕНЫ.</div>
+        <div class="page-number">14</div>
+    </div>
+
+    <!-- Страница 15: Контакты и Призыв к действию -->
+    <div class="page" style="justify-content: center; text-align: center;">
+        <h1 class="blue" style="margin-bottom: 30px;">Свяжитесь с нами</h1>
+        <div class="glass-box" style="margin: auto; width: 80%;">
+            <p style="font-size: 20px; color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green);">Готовы стать частью истории?</p>
+            <p style="font-size: 18px; margin-top: 20px;">Основатель: <span class="highlight-blue">ЯрКуСиК</span></p>
+            <p style="font-size: 18px;">Email: <span class="highlight-red">contact@yks.corp</span></p>
+            <p style="font-size: 18px;">Telegram: <span class="highlight-green">@YarKuSiK_Official</span></p>
+            <p style="font-size: 18px; margin-top: 30px;">YKS Corporation. Музыка меняет мир. Мы меняем музыку.</p>
+        </div>
+        <div class="footer-text">© YKS CORPORATION. ВСЕ ПРАВА ЗАЩИЩЕНЫ.</div>
+        <div class="page-number">15</div>
+    </div>
+
+    
+
+</body>
+  </html>
